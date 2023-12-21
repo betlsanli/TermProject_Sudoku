@@ -1,6 +1,17 @@
 public class BruteForceSolver {
 
-    public static boolean solveSudoku(int[][] sudoku) {
+    public static int[][] solve(int[][] sudoku){ // Creates a copy, does not change the original puzzle
+        int[][] solution = new int[sudoku.length][sudoku[0].length];
+        for(int i = 0; i < solution.length; i++){
+            for(int j = 0; j < solution[0].length; j++){
+                solution[i][j] = sudoku[i][j];
+            }
+        }
+        solveSudoku(solution);
+        return solution;
+    }
+
+    private static boolean solveSudoku(int[][] sudoku) {
         int[] emptyCell = findEmptyCell(sudoku);
 
         if (emptyCell == null) {

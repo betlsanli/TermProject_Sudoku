@@ -12,10 +12,10 @@ public class SudokuGenerator {
         fillDiagonalBlocks(sudoku);
 
         // Solve the Sudoku
-        BruteForceSolver.solveSudoku(sudoku);
+        sudoku = BruteForceSolver.solve(sudoku);
 
         // Remove some numbers to create the puzzle
-        removeNumbers(sudoku, level.level); // You can adjust the difficulty level by changing the second parameter
+        removeNumbers(sudoku, level.level);
 
         return sudoku;
     }
@@ -36,9 +36,8 @@ public class SudokuGenerator {
         }
     }
     private static void removeNumbers(int[][] sudoku, int numberOfCellsToRemove) {
-
         Random rand = new Random();
-        while(numberOfCellsToRemove != 0){
+        while(numberOfCellsToRemove > 0){
             int row = rand.nextInt(0,9);
             int col = rand.nextInt(0,9);
             if(sudoku[row][col] != 0){

@@ -1,11 +1,6 @@
 public class Main {
     public static void main(String[] args) {
-        int[][] sudoku = SudokuGenerator.generateSudoku(Level.HARD);
-        System.out.println("Sudoku");
-        printSudoku(sudoku);
-        BruteForceSolver.solveSudoku(sudoku);
-        System.out.println("Solution");
-        printSudoku(sudoku);
+        GameManager.setupGame();
     }
     private static void printSudoku(int[][] sudoku) {
         for (int i = 0; i < 9; i++) {
