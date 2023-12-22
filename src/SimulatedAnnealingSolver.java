@@ -1,25 +1,6 @@
 import java.util.*;
 
 public class SimulatedAnnealingSolver {
-    int[][] solution = new int[9][9];
-
-    public static void printSudoku(int[][] sudokuP){
-        System.out.println();
-        for(int i = 0; i < 9; i++){
-            String line = "";
-            if(i==3||i==6){
-                line += ("----------------------\n");
-            }
-            for(int j = 0; j <= 8; j++){
-                if(j==3||j==6){
-                    line += (" | ");
-                }
-                line += sudokuP[i][j]+" ";
-            }
-            System.out.println(line);
-        }
-    }
-
     private static void markFixedValues(int[][] fixedSudoku) {
         for (int i = 0; i < fixedSudoku.length; i++) {
             for (int j = 0; j < fixedSudoku[0].length; j++) {
@@ -339,36 +320,5 @@ public class SimulatedAnnealingSolver {
             return initialSudoku;
         }
         return sudoku;
-    }
-
-    public static void main(String[] args) {
-        String startingSudoku =
-                "024007000" +
-                        "600000000" +
-                        "003680415" +
-                        "431005000" +
-                        "500000032" +
-                        "790000060" +
-                        "209710800" +
-                        "040093000" +
-                        "310004750";
-
-        int[][] sudoku = new int[9][9];
-        int index = 0;
-
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                sudoku[i][j] = Character.getNumericValue(startingSudoku.charAt(index));
-                index++;
-            }
-        }
-
-        System.out.println("Sudoku Problem:");
-        printSudoku(sudoku);
-
-        int[][] solution = solveSudoku(sudoku);
-
-        System.out.println("\nSolved Sudoku:");
-        printSudoku(solution);
     }
 }

@@ -23,6 +23,7 @@ public class SudokuGameGUI extends JFrame{
     private JTable block8;
     private JTable block9;
     private JButton refreshButton;
+    private JButton ac3Button;
     JTable[] blocks = {block1,block2,block3,block4,block5,block6,block7,block8,block9};
 
     public SudokuGameGUI(){
@@ -93,5 +94,9 @@ public class SudokuGameGUI extends JFrame{
 
     public JButton getBackButton() {
         return backButton;
+    }
+
+    public JButton getAc3Button() {
+        return ac3Button;
     }
 }
