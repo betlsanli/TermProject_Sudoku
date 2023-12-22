@@ -35,6 +35,8 @@ public class GameManager {
                     else if(e.getSource() == game.getSimulatedButton()){ //Simulated annealing solver
                         game.getBruteButton().setEnabled(false);
                         game.getSimulatedButton().setEnabled(false);
+                        int[][] sudoku = SimulatedAnnealingSolver.solveSudoku(game.getPuzzle());
+                        game.setupTable(sudoku);
                     }
                     else if(e.getSource() == game.getRefreshButton()){ //Refresh puzzle
                         game.getBruteButton().setEnabled(true);

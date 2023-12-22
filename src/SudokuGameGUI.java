@@ -77,7 +77,6 @@ public class SudokuGameGUI extends JFrame{
             }
             blocks[i].setModel(new DefaultTableModel(temp,temp[0]));
         }
-
     }
 
     public JButton getRefreshButton(){
