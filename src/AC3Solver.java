@@ -1,215 +1,160 @@
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 public class AC3Solver {
-        private static final int SIZE = 9;
 
-        public static int[][] solve(int[][] sudoku){
-            int[][] solution = new int[sudoku.length][sudoku[0].length];
-            for(int i = 0; i < solution.length; i++){
-                for(int j = 0; j < solution[0].length; j++){
-                    solution[i][j] = sudoku[i][j];
+    private static class Variable{
+        private final int row;
+        private final int col;
+        ArrayList<Integer> domain;
+
+        private Variable(int[][] sudoku,int row, int col){
+            this.row = row;
+            this.col = col;
+
+            setDomain(sudoku);
+        }
+        private void setDomain(int[][] sudoku){
+            ArrayList<Integer> domain = new ArrayList<>();
+            for(int i = 1; i <= sudoku.length; i++){
+                if(isValid(sudoku,row,col,i)){
+                    domain.add(i);
                 }
             }
-            solveSudoku(solution);
+            this.domain = domain;
+        }
+        private ArrayList<Integer> getDomain(){
+            return domain;
+        }
+        private boolean removeFromDomain(int num){
+            return domain.remove(Integer.valueOf(num));
+        }
+    } //End of Variable class
+
+    public static int[][] solve(int[][] sudoku){
+
+        int[][] solution = new int[sudoku.length][sudoku[0].length];
+        for(int i = 0; i < solution.length; i++){
+            for(int j = 0; j < solution[0].length; j++){
+                solution[i][j] = sudoku[i][j];
+            }
+        }
+
+        ArrayList<Variable> variables = new ArrayList<>();
+        for(int i = 0; i < sudoku.length; i++){
+            for(int j = 0; j < sudoku[0].length; j++){
+                if(sudoku[i][j] == 0){
+                    variables.add(new Variable(sudoku,i,j));
+                }
+            }
+        }
+        if(variables.isEmpty()) //No empty box in the sudoku
+            return sudoku;
+
+        if(!AC3(variables)){ //Sudoku is unsolvable
+            return sudoku;
+        }
+        if(solveSudoku(solution,variables,0)){
             return solution;
         }
+        return sudoku;
+    }
+    private static boolean solveSudoku(int[][] sudoku, ArrayList<Variable> variables, int index){
+        if(index == variables.size())
+            return true;
+        Variable variable = variables.get(index);
+        for(int value : variable.getDomain()){
+            if(isValid(sudoku,variable.row,variable.col,value)){
+                sudoku[variable.row][variable.col] = value;
+                if(solveSudoku(sudoku,variables,index+1))
+                    return true;
+                sudoku[variable.row][variable.col] = 0;
+            }
+        }
+        return false;
+    }
+    private static boolean AC3(ArrayList<Variable> variables){
 
-        private static boolean solveSudoku(int[][] board) {
-            if (!isConsistent(board)) {
+        List<Variable[]> queue = new LinkedList<>();
+
+        for(Variable from : variables){ //Create arcs between variables
+            for(Variable to : variables){
+                if(areNeighbours(from, to))
+                    queue.add(new Variable[]{from,to});
+            }
+        }
+
+        while(!queue.isEmpty()){
+            Variable[] arc = queue.remove(0);
+            if(arc[0].getDomain().size() == 0)
                 return false;
-            }
-
-            int[] emptyCell = findEmptyCell(board);
-            if (emptyCell == null) {
-                return true; // Puzzle is solved
-            }
-
-            int row = emptyCell[0];
-            int col = emptyCell[1];
-
-            for (int num = 1; num <= SIZE; num++) {
-                if (isSafe(board, row, col, num)) {
-                    board[row][col] = num;
-
-                    if (solveSudoku(board)) {
-                        return true; // Puzzle is solved
-                    }
-
-                    // If placing num at (row, col) doesn't lead to a solution, backtrack
-                    board[row][col] = 0;
-                }
-            }
-
-            return false; // No number can be placed at (row, col)
-        }
-
-    private static boolean isConsistent(int[][] board) {
-        Queue<int[]> queue = new LinkedList<>();
-
-        // Enqueue all arcs (cell pairs) initially
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                if (board[i][j] != 0) {
-                    enqueueArcs(queue, i, j);
-                }
-            }
-        }
-
-        while (!queue.isEmpty()) {
-            int[] arc = queue.poll();
-            int arcRow = arc[0];
-            int arcCol = arc[1];
-
-            // Try to revise the domain of the current cell
-            if (revise(board, arcRow, arcCol)) {
-                // If the domain is revised, enqueue arcs involving the current cell
-                enqueueArcs(queue, arcRow, arcCol);
-
-                // If any domain becomes empty, the puzzle is inconsistent
-                if (isEmptyDomain(board, arcRow, arcCol)) {
+            if(revise(arc[0], arc[1])){
+                if(arc[0].getDomain().size() == 0)
                     return false;
+                for(Variable var : variables){
+                    if(areNeighbours(arc[0], var))
+                        queue.add(new Variable[]{var,arc[0]});
                 }
             }
         }
-
         return true;
     }
-
-    private static void enqueueArcs(Queue<int[]> queue, int row, int col) {
-        // Enqueue arcs related to the current cell (row, col)
-        enqueueRowArcs(queue, row, col);
-        enqueueColumnArcs(queue, row, col);
-        enqueueBoxArcs(queue, row, col);
-    }
-
-    private static void enqueueRowArcs(Queue<int[]> queue, int row, int col) {
-        // Enqueue all arcs involving the cells in the same row
-        for (int c = 0; c < SIZE; c++) {
-            if (c != col) {
-                queue.add(new int[]{row, c});
-            }
+    private static boolean areNeighbours(Variable from, Variable to){
+        if(from != to){
+            if(from.row == to.row)
+                return true;
+            if(from.col == to.col)
+                return true;
+            if( ((from.row/3) * 3) == ((to.row/3) * 3) && ((from.col/3) * 3) == ((to.col/3) * 3) )
+                return true;
         }
+        return false;
     }
-
-    private static void enqueueColumnArcs(Queue<int[]> queue, int row, int col) {
-        // Enqueue all arcs involving the cells in the same column
-        for (int r = 0; r < SIZE; r++) {
-            if (r != row) {
-                queue.add(new int[]{r, col});
-            }
-        }
-    }
-
-    private static void enqueueBoxArcs(Queue<int[]> queue, int row, int col) {
-        // Enqueue all arcs involving the cells in the same 3x3 box
-        int boxStartRow = row - row % 3;
-        int boxStartCol = col - col % 3;
-        for (int r = boxStartRow; r < boxStartRow + 3; r++) {
-            for (int c = boxStartCol; c < boxStartCol + 3; c++) {
-                if (r != row || c != col) {
-                    queue.add(new int[]{r, c});
-                }
-            }
-        }
-    }
-
-    private static boolean revise(int[][] board, int row, int col) {
+    private static boolean revise(Variable x, Variable y){
         boolean revised = false;
-        int domain = board[row][col];
-
-        for (int c = 0; c < SIZE; c++) {
-            if (c != col && board[row][c] == 0) {
-                revised |= removeValueFromDomain(board, row, c, domain);
-            }
-        }
-
-        for (int r = 0; r < SIZE; r++) {
-            if (r != row && board[r][col] == 0) {
-                revised |= removeValueFromDomain(board, r, col, domain);
-            }
-        }
-
-        int boxStartRow = row - row % 3;
-        int boxStartCol = col - col % 3;
-        for (int r = boxStartRow; r < boxStartRow + 3; r++) {
-            for (int c = boxStartCol; c < boxStartCol + 3; c++) {
-                if ((r != row || c != col) && board[r][c] == 0) {
-                    revised |= removeValueFromDomain(board, r, c, domain);
+        boolean flag = false;
+        for(int i = 0; i < x.domain.size(); i++){
+            for(int j : y.domain){
+                if(x.domain.get(i) != j){
+                    flag = true;
+                    break;
                 }
             }
+            if(!flag){
+                x.removeFromDomain(x.domain.get(i));
+                revised = true;
+            }
         }
-
         return revised;
     }
-
-
-    private static boolean removeValueFromDomain(int[][] board, int row, int col, int value) {
-        if (board[row][col] == value) {
-            return false; // The value is already in the cell, cannot be removed
-        }
-
-        int oldValue = board[row][col];
-        board[row][col] = 0; // Temporarily clear the cell
-
-        if (!isSafe(board, row, col, oldValue)) {
-            board[row][col] = oldValue; // Restore the original value if the removal makes the board inconsistent
-            return false;
-        }
-
-        // Restore the original value if the removal doesn't violate the constraints
-        board[row][col] = oldValue;
-        return true;
+    private static boolean isValid(int[][] sudoku, int row, int col, int num) {
+        return !usedInRow(sudoku, row, num) &&
+                !usedInColumn(sudoku, col, num) &&
+                !usedInBox(sudoku, row - row % 3, col - col % 3, num);
     }
-
-    private static boolean isEmptyDomain(int[][] board, int row, int col) {
-        return board[row][col] == 0;
-    }
-
-
-    private static int[] findEmptyCell(int[][] board) {
-            for (int i = 0; i < SIZE; i++) {
-                for (int j = 0; j < SIZE; j++) {
-                    if (board[i][j] == 0) {
-                        return new int[]{i, j};
-                    }
-                }
+    private static boolean usedInRow(int[][] sudoku, int row, int num) {
+        for (int col = 0; col < sudoku.length; col++) {
+            if (sudoku[row][col] == num) {
+                return true;
             }
-            return null; // No empty cell found
         }
-
-        private static boolean isSafe(int[][] board, int row, int col, int num) {
-            return !usedInRow(board, row, num) &&
-                    !usedInColumn(board, col, num) &&
-                    !usedInBox(board, row - row % 3, col - col % 3, num);
+        return false;
+    }
+    private static boolean usedInColumn(int[][] sudoku, int col, int num) {
+        for (int row = 0; row < sudoku[0].length; row++) {
+            if (sudoku[row][col] == num) {
+                return true;
+            }
         }
-
-        private static boolean usedInRow(int[][] board, int row, int num) {
-            for (int col = 0; col < SIZE; col++) {
-                if (board[row][col] == num) {
+        return false;
+    }
+    private static boolean usedInBox(int[][] sudoku, int boxStartRow, int boxStartCol, int num) {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (sudoku[boxStartRow + i][boxStartCol + j] == num) {
                     return true;
                 }
             }
-            return false;
         }
-
-        private static boolean usedInColumn(int[][] board, int col, int num) {
-            for (int row = 0; row < SIZE; row++) {
-                if (board[row][col] == num) {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private static boolean usedInBox(int[][] board, int boxStartRow, int boxStartCol, int num) {
-            for (int i = 0; i < 3; i++) {
-                for (int j = 0; j < 3; j++) {
-                    if (board[boxStartRow + i][boxStartCol + j] == num) {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
+        return false;
+    }
 }

@@ -4,8 +4,7 @@ public class SimulatedAnnealingSolver {
     private static void markFixedValues(int[][] fixedSudoku) {
         for (int i = 0; i < fixedSudoku.length; i++) {
             for (int j = 0; j < fixedSudoku[0].length; j++) {
-                // If the value in the cell is not 0, set it to 1 in fixedSudoku
-                if (fixedSudoku[i][j] != 0) {
+                if (fixedSudoku[i][j] != 0) { //Fixed cells have the value of 1
                     fixedSudoku[i][j] = 1;
                 }
             }
@@ -63,7 +62,7 @@ public class SimulatedAnnealingSolver {
         return listOfBlocks;
     }
 
-    public static int[][] fill3x3Blocks(int[][] sudoku) {
+    public static void fill3x3Blocks(int[][] sudoku) {
         for(int i = 0; i < 9; i++){
             for(int j = 0; j < 9; j++){
                 if(sudoku[i][j] == 0){
@@ -78,7 +77,6 @@ public class SimulatedAnnealingSolver {
                 }
             }
         }
-        return sudoku;
     }
 
     private static boolean usedInBox(int[][] sudoku, int boxStartRow, int boxStartCol, int num) {
@@ -132,7 +130,6 @@ public class SimulatedAnnealingSolver {
             System.arraycopy(sudoku[i], 0, proposedSudoku[i], 0, sudoku[i].length);
         }
 
-        // Swap the values of the two specified boxes
         int row1 = boxesToFlip[0][0];
         int col1 = boxesToFlip[0][1];
         int row2 = boxesToFlip[1][0];
@@ -146,27 +143,20 @@ public class SimulatedAnnealingSolver {
     }
     public static List<Object> proposedState(int[][] sudoku, int[][] fixedSudoku, List<List<int[]>> listOfBlocks) {
         Random random = new Random();
-        // Randomly select a 3x3 block
-        List<int[]> randomBlock = listOfBlocks.get(random.nextInt(0,9));
 
-        // Check the sum of values in the selected block
+        List<int[]> randomBlock = listOfBlocks.get(random.nextInt(0,9));
         int sumInBlock = sumOfOneBlock(fixedSudoku, randomBlock);
 
-        // If the sum is greater than 6, return the current state with a cost difference of 1
         if (sumInBlock > 6) {
             return Arrays.asList(sudoku, new int[2][2], 0);
         }
-
-        // If the sum is 6 or less, get two random boxes within the block
         int[][] boxesToFlip = twoRandomBoxesWithinBlock(fixedSudoku, randomBlock);
-
-        // Create a new state by flipping the values of the two selected boxes
         int[][] proposedSudoku = flipBoxes(sudoku, boxesToFlip);
 
         return Arrays.asList(proposedSudoku, boxesToFlip, 1);
     }
     public static List<Object> chooseNewState(int[][] currentSudoku, int[][] fixedSudoku, List<List<int[]>> listOfBlocks, double sigma) {
-        // Get the proposed state and information about the boxes to check
+
         List<Object> proposal = proposedState(currentSudoku, fixedSudoku, listOfBlocks);
         int[][] newSudoku = (int[][]) proposal.get(0);
         int[][] boxesToCheck = (int[][]) proposal.get(1);
@@ -179,24 +169,20 @@ public class SimulatedAnnealingSolver {
 
         int costDifference = newCost - currentCost;
 
-        // Calculate the acceptance probability
+        // Acceptance probability
         double rho = Math.exp(-costDifference / sigma);
 
-        // If the proposed state is accepted
-        if (Math.random() < rho) {
+        if (Math.random() < rho) { //Accepted
             return Arrays.asList(newSudoku, boxesToCheck, costDifference);
-        } else {
-            // If not accepted, return the current state
+        } else { //Not accepted, returns current state
             return Arrays.asList(currentSudoku, new int[2][2], 0);
         }
     }
     public static int chooseNumberOfIterations(int[][] fixedSudoku) {
         int numberOfIterations = 0;
 
-        // Iterate through each cell in the Sudoku grid
         for (int i = 0; i < fixedSudoku.length; i++) {
             for (int j = 0; j < fixedSudoku[0].length; j++) {
-                // If the value in the cell is not 0, increment numberOfIterations
                 if (fixedSudoku[i][j] != 0) {
                     numberOfIterations++;
                 }
@@ -208,33 +194,26 @@ public class SimulatedAnnealingSolver {
     public static double calculateInitialSigma(int[][] sudoku, int[][] fixedSudoku, List<List<int[]>> listOfBlocks) {
         List<Integer> listOfDifferences = new ArrayList<>();
 
-        // Iterate a specified number of times to collect differences in cost
+        // Collect cost differences
         for (int i = 0; i < 10; i++) {
             int[][] proposedSudoku = (int[][]) proposedState(sudoku, fixedSudoku, listOfBlocks).get(0);
             listOfDifferences.add(calculateErrorNumber(proposedSudoku));
         }
 
-        // Calculate the standard deviation of differences in cost
+        // Standard deviation of cost differences
         return pstdev(listOfDifferences);
     }
 
-    // Helper function to calculate the standard deviation of a list of integers
     public static double pstdev(List<Integer> values) {
         int n = values.size();
         if (n < 2) {
             throw new ArithmeticException("Population standard deviation requires at least two data points");
         }
 
-        // Calculate the mean
         double mean = values.stream().mapToDouble(Integer::doubleValue).average().orElse(0);
-
-        // Calculate the sum of squared differences from the mean
         double sumSquaredDifferences = values.stream().mapToDouble(value -> Math.pow(value - mean, 2)).sum();
-
-        // Calculate the variance (average of squared differences)
         double variance = sumSquaredDifferences / n;
 
-        // Return the square root of the variance (standard deviation)
         return Math.sqrt(variance);
     }
 
@@ -255,49 +234,38 @@ public class SimulatedAnnealingSolver {
             }
         }
 
-        // Mark fixed values in the Sudoku grid
         markFixedValues(fixedSudoku);
-
-        // Create a list of 3x3 blocks
         List<List<int[]>> listOfBlocks = createList3x3Blocks();
+        fill3x3Blocks(sudoku);
 
-        // Randomly fill 3x3 blocks with values in the Sudoku grid
-        sudoku = fill3x3Blocks(sudoku);
 
-        // Calculate the initial value of sigma
         double sigma = calculateInitialSigma(sudoku, fixedSudoku, listOfBlocks);
-
-        // Calculate the initial number of errors (cost)
+        // Number of errors (cost)
         int score = calculateErrorNumber(sudoku);
-
-        // Determine the total number of iterations based on fixed values
         int iterations = chooseNumberOfIterations(fixedSudoku);
 
-        // If the initial number of errors is 0, the Sudoku is already solved
-        if (score <= 0) {
+        if (score <= 0) { //Sudoku solved
             return sudoku;
         }
 
+        // Simulated annealing loop limit
         int limit = 1000;
         // Main simulated annealing loop
         while (limit > 0) {
             int previousScore = score;
 
-            // For each iteration, attempt to choose a new state
             for (int i = 0; i < iterations; i++) {
                 List<Object> newState = chooseNewState(sudoku, fixedSudoku, listOfBlocks, sigma);
                 sudoku = (int[][]) newState.get(0);
                 int scoreDiff = (int) newState.get(2);
                 score += scoreDiff;
 
-                /*System.out.println("Score: " + score);*/
-
-                // If the number of errors becomes 0, the Sudoku is solved
-                if (score <= 0) {
+                if (score <= 0) { // Sudoku solved
                     return sudoku;
                 }
             }
 
+            // If not solved
             sigma *= decreaseFactor;
 
             if (score >= previousScore) {
@@ -305,13 +273,11 @@ public class SimulatedAnnealingSolver {
             } else {
                 stuckCount = 0;
             }
-
             if (stuckCount > 80) {
                 sigma += 2;
             }
 
-            // If the current state has no errors, print and break out of the loop
-            if (calculateErrorNumber(sudoku) == 0) {
+            if (calculateErrorNumber(sudoku) == 0) { //Sudoku solved
                 break;
             }
             limit--;

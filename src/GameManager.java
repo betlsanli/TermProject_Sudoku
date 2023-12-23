@@ -26,35 +26,35 @@ public class GameManager {
                     initGame(sudoku);
                 }
                 else{ // Game buttons
-                    if(e.getSource() == game.getBruteButton()){ //Brute force solver
-                        game.getBruteButton().setEnabled(false);
+                    if(e.getSource() == game.getBacktrackButton()){ //Backtrack solver
+                        game.getBacktrackButton().setEnabled(false);
                         game.getSimulatedButton().setEnabled(false);
                         game.getAc3Button().setEnabled(false);
-                        int[][] sudoku = BruteForceSolver.solve(game.getPuzzle());
+                        int[][] sudoku = BacktrackSolver.solve(game.getPuzzle());
                         game.setupTable(sudoku);
                     }
                     else if(e.getSource() == game.getSimulatedButton()){ //Simulated annealing solver
-                        game.getBruteButton().setEnabled(false);
+                        game.getBacktrackButton().setEnabled(false);
                         game.getSimulatedButton().setEnabled(false);
                         game.getAc3Button().setEnabled(false);
                         int[][] sudoku = SimulatedAnnealingSolver.solveSudoku(game.getPuzzle());
                         game.setupTable(sudoku);
                     }
-                    else if(e.getSource() == game.getAc3Button()){
-                        game.getBruteButton().setEnabled(false);
+                    else if(e.getSource() == game.getAc3Button()){ //AC3 Solver
+                        game.getBacktrackButton().setEnabled(false);
                         game.getSimulatedButton().setEnabled(false);
                         game.getAc3Button().setEnabled(false);
                         int[][] sudoku = AC3Solver.solve(game.getPuzzle());
                         game.setupTable(sudoku);
                     }
                     else if(e.getSource() == game.getRefreshButton()){ //Refresh puzzle
-                        game.getBruteButton().setEnabled(true);
+                        game.getBacktrackButton().setEnabled(true);
                         game.getSimulatedButton().setEnabled(true);
                         game.getAc3Button().setEnabled(true);
                         game.setupTable(game.getPuzzle());
                     }
                     else{ //Back
-                        game.getBruteButton().setEnabled(true);
+                        game.getBacktrackButton().setEnabled(true);
                         game.getSimulatedButton().setEnabled(true);
                         game.getAc3Button().setEnabled(true);
                         game.dispose();
@@ -67,7 +67,7 @@ public class GameManager {
         mainMenu.getEasyButton().addActionListener(actionListener);
         mainMenu.getMediumButton().addActionListener(actionListener);
         mainMenu.getHardButton().addActionListener(actionListener);
-        game.getBruteButton().addActionListener(actionListener);
+        game.getBacktrackButton().addActionListener(actionListener);
         game.getBackButton().addActionListener(actionListener);
         game.getSimulatedButton().addActionListener(actionListener);
         game.getRefreshButton().addActionListener(actionListener);

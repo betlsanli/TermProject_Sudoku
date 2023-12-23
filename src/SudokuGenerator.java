@@ -8,13 +8,8 @@ public class SudokuGenerator {
     public static int[][] generateSudoku(Level level) {
         int[][] sudoku = new int[9][9];
 
-        // Fill the diagonal blocks
         fillDiagonalBlocks(sudoku);
-
-        // Solve the Sudoku
-        sudoku = BruteForceSolver.solve(sudoku);
-
-        // Remove some numbers to create the puzzle
+        sudoku = BacktrackSolver.solve(sudoku);
         removeNumbers(sudoku, level.level);
 
         return sudoku;

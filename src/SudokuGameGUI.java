@@ -10,7 +10,7 @@ public class SudokuGameGUI extends JFrame{
     private int[][] puzzle;
     private JPanel gamePanel;
     private JTable block1;
-    private JButton bruteButton;
+    private JButton backtrackButton;
     private JButton simulatedButton;
     private JButton backButton;
     private JTable block2;
@@ -84,8 +84,8 @@ public class SudokuGameGUI extends JFrame{
         return refreshButton;
     }
 
-    public JButton getBruteButton() {
-        return bruteButton;
+    public JButton getBacktrackButton() {
+        return backtrackButton;
     }
 
     public JButton getSimulatedButton() {

@@ -208,14 +208,14 @@
           <grid row="1" column="2" row-span="1" col-span="2" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
       </hspacer>
-      <component id="537af" class="javax.swing.JButton" binding="bruteButton">
+      <component id="537af" class="javax.swing.JButton" binding="backtrackButton">
         <constraints>
           <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <focusable value="false"/>
           <font size="16"/>
-          <text value="Brute Force Solver"/>
+          <text value="Backtrack Solver"/>
         </properties>
       </component>
       <component id="3bef6" class="javax.swing.JButton" binding="simulatedButton">

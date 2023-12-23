@@ -1,4 +1,4 @@
-public class BruteForceSolver {
+public class BacktrackSolver {
 
     public static int[][] solve(int[][] sudoku){ // Creates a copy, does not change the original puzzle
         int[][] solution = new int[sudoku.length][sudoku[0].length];
@@ -26,14 +26,14 @@ public class BruteForceSolver {
                 sudoku[row][col] = num;
 
                 if (solveSudoku(sudoku)) {
-                    return true; // Continue with the next empty cell
+                    return true;
                 }
 
-                sudoku[row][col] = 0; // Backtrack if the current configuration doesn't lead to a solution
+                sudoku[row][col] = 0; // Backtrack
             }
         }
 
-        return false; // No valid number found for the current cell
+        return false;
     }
 
     private static int[] findEmptyCell(int[][] sudoku) {
@@ -44,7 +44,7 @@ public class BruteForceSolver {
                 }
             }
         }
-        return null; // No empty cell found
+        return null;
     }
 
     private static boolean isValidMove(int[][] sudoku, int row, int col, int num) {
