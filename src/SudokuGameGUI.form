@@ -25,14 +25,17 @@
             <properties>
               <autoResizeMode value="2"/>
               <autoscrolls value="false"/>
-              <enabled value="false"/>
+              <cellSelectionEnabled value="true"/>
+              <columnSelectionAllowed value="true"/>
+              <enabled value="true"/>
               <fillsViewportHeight value="false"/>
               <focusable value="false"/>
               <font size="16" style="1"/>
               <gridColor color="-16777216"/>
               <intercellSpacing width="0" height="0"/>
               <rowMargin value="0"/>
-              <rowSelectionAllowed value="false"/>
+              <rowSelectionAllowed value="true"/>
+              <selectionBackground color="-1"/>
               <updateSelectionOnSort value="false"/>
             </properties>
           </component>
@@ -45,14 +48,17 @@
             <properties>
               <autoResizeMode value="2"/>
               <autoscrolls value="false"/>
-              <enabled value="false"/>
+              <cellSelectionEnabled value="true"/>
+              <columnSelectionAllowed value="true"/>
+              <enabled value="true"/>
               <fillsViewportHeight value="false"/>
               <focusable value="false"/>
               <font size="16" style="1"/>
               <gridColor color="-16777216"/>
               <intercellSpacing width="0" height="0"/>
               <rowMargin value="0"/>
-              <rowSelectionAllowed value="false"/>
+              <rowSelectionAllowed value="true"/>
+              <selectionBackground color="-1"/>
               <updateSelectionOnSort value="false"/>
             </properties>
           </component>
@@ -66,14 +72,17 @@
               <autoResizeMode value="2"/>
               <autoscrolls value="false"/>
               <background color="-2302756"/>
-              <enabled value="false"/>
+              <cellSelectionEnabled value="true"/>
+              <columnSelectionAllowed value="true"/>
+              <enabled value="true"/>
               <fillsViewportHeight value="false"/>
               <focusable value="false"/>
               <font size="16" style="1"/>
               <gridColor color="-16777216"/>
               <intercellSpacing width="0" height="0"/>
               <rowMargin value="0"/>
-              <rowSelectionAllowed value="false"/>
+              <rowSelectionAllowed value="true"/>
+              <selectionBackground color="-2302756"/>
               <updateSelectionOnSort value="false"/>
             </properties>
           </component>
@@ -87,14 +96,17 @@
               <autoResizeMode value="2"/>
               <autoscrolls value="false"/>
               <background color="-2302756"/>
-              <enabled value="false"/>
+              <cellSelectionEnabled value="true"/>
+              <columnSelectionAllowed value="true"/>
+              <enabled value="true"/>
               <fillsViewportHeight value="false"/>
               <focusable value="false"/>
               <font size="16" style="1"/>
               <gridColor color="-16777216"/>
               <intercellSpacing width="0" height="0"/>
               <rowMargin value="0"/>
-              <rowSelectionAllowed value="false"/>
+              <rowSelectionAllowed value="true"/>
+              <selectionBackground color="-2302756"/>
               <updateSelectionOnSort value="false"/>
             </properties>
           </component>
@@ -107,14 +119,17 @@
             <properties>
               <autoResizeMode value="2"/>
               <autoscrolls value="false"/>
-              <enabled value="false"/>
+              <cellSelectionEnabled value="true"/>
+              <columnSelectionAllowed value="true"/>
+              <enabled value="true"/>
               <fillsViewportHeight value="false"/>
               <focusable value="false"/>
               <font size="16" style="1"/>
               <gridColor color="-16777216"/>
               <intercellSpacing width="0" height="0"/>
               <rowMargin value="0"/>
-              <rowSelectionAllowed value="false"/>
+              <rowSelectionAllowed value="true"/>
+              <selectionBackground color="-1"/>
               <updateSelectionOnSort value="false"/>
             </properties>
           </component>
@@ -128,14 +143,17 @@
               <autoResizeMode value="2"/>
               <autoscrolls value="false"/>
               <background color="-2302756"/>
-              <enabled value="false"/>
+              <cellSelectionEnabled value="true"/>
+              <columnSelectionAllowed value="true"/>
+              <enabled value="true"/>
               <fillsViewportHeight value="false"/>
               <focusable value="false"/>
               <font size="16" style="1"/>
               <gridColor color="-16777216"/>
               <intercellSpacing width="0" height="0"/>
               <rowMargin value="0"/>
-              <rowSelectionAllowed value="false"/>
+              <rowSelectionAllowed value="true"/>
+              <selectionBackground color="-2302756"/>
               <updateSelectionOnSort value="false"/>
             </properties>
           </component>
@@ -148,14 +166,17 @@
             <properties>
               <autoResizeMode value="2"/>
               <autoscrolls value="false"/>
-              <enabled value="false"/>
+              <cellSelectionEnabled value="true"/>
+              <columnSelectionAllowed value="true"/>
+              <enabled value="true"/>
               <fillsViewportHeight value="false"/>
               <focusable value="false"/>
               <font size="16" style="1"/>
               <gridColor color="-16777216"/>
               <intercellSpacing width="0" height="0"/>
               <rowMargin value="0"/>
-              <rowSelectionAllowed value="false"/>
+              <rowSelectionAllowed value="true"/>
+              <selectionBackground color="-1"/>
               <updateSelectionOnSort value="false"/>
             </properties>
           </component>
@@ -169,14 +190,17 @@
               <autoResizeMode value="2"/>
               <autoscrolls value="false"/>
               <background color="-2302756"/>
-              <enabled value="false"/>
+              <cellSelectionEnabled value="true"/>
+              <columnSelectionAllowed value="true"/>
+              <enabled value="true"/>
               <fillsViewportHeight value="false"/>
               <focusable value="false"/>
               <font size="16" style="1"/>
               <gridColor color="-16777216"/>
               <intercellSpacing width="0" height="0"/>
               <rowMargin value="0"/>
-              <rowSelectionAllowed value="false"/>
+              <rowSelectionAllowed value="true"/>
+              <selectionBackground color="-2302756"/>
               <updateSelectionOnSort value="false"/>
             </properties>
           </component>
@@ -189,15 +213,19 @@
             <properties>
               <autoResizeMode value="2"/>
               <autoscrolls value="false"/>
-              <enabled value="false"/>
+              <cellSelectionEnabled value="true"/>
+              <columnSelectionAllowed value="true"/>
+              <enabled value="true"/>
               <fillsViewportHeight value="false"/>
               <focusable value="false"/>
               <font size="16" style="1"/>
               <gridColor color="-16777216"/>
               <intercellSpacing width="0" height="0"/>
               <rowMargin value="0"/>
-              <rowSelectionAllowed value="false"/>
+              <rowSelectionAllowed value="true"/>
+              <selectionBackground color="-1"/>
               <updateSelectionOnSort value="false"/>
+              <verifyInputWhenFocusTarget value="true"/>
             </properties>
           </component>
         </children>

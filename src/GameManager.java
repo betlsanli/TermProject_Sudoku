@@ -5,7 +5,7 @@ public class GameManager {
     private static MainMenu mainMenu;
     private static SudokuGameGUI game;
 
-    public static void setupGame(){
+    public static void setupGame() throws NoSuchMethodException {
         mainMenu = new MainMenu();
         game = new SudokuGameGUI();
         ActionListener actionListener = new ActionListener() {
@@ -30,6 +30,7 @@ public class GameManager {
                         game.getBacktrackButton().setEnabled(false);
                         game.getSimulatedButton().setEnabled(false);
                         game.getAc3Button().setEnabled(false);
+                        game.enableInput(false);
                         int[][] sudoku = BacktrackSolver.solve(game.getPuzzle());
                         game.setupTable(sudoku);
                     }
@@ -37,6 +38,7 @@ public class GameManager {
                         game.getBacktrackButton().setEnabled(false);
                         game.getSimulatedButton().setEnabled(false);
                         game.getAc3Button().setEnabled(false);
+                        game.enableInput(false);
                         int[][] sudoku = SimulatedAnnealingSolver.solveSudoku(game.getPuzzle());
                         game.setupTable(sudoku);
                     }
@@ -44,6 +46,7 @@ public class GameManager {
                         game.getBacktrackButton().setEnabled(false);
                         game.getSimulatedButton().setEnabled(false);
                         game.getAc3Button().setEnabled(false);
+                        game.enableInput(false);
                         int[][] sudoku = AC3Solver.solve(game.getPuzzle());
                         game.setupTable(sudoku);
                     }
@@ -51,12 +54,14 @@ public class GameManager {
                         game.getBacktrackButton().setEnabled(true);
                         game.getSimulatedButton().setEnabled(true);
                         game.getAc3Button().setEnabled(true);
+                        game.enableInput(true);
                         game.setupTable(game.getPuzzle());
                     }
                     else{ //Back
                         game.getBacktrackButton().setEnabled(true);
                         game.getSimulatedButton().setEnabled(true);
                         game.getAc3Button().setEnabled(true);
+                        game.enableInput(true);
                         game.dispose();
                         mainMenu.setVisible(true);
                     }
